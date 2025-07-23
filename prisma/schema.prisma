@@ -13,3 +13,19 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+model User {
+  id       String   @id @default(uuid())
+  email    String   @unique
+  password String
+  jobs     Job[]
+}
+
+model Job {
+  id        String   @id @default(uuid())
+  company   String
+  title     String
+  status    String
+  appliedAt DateTime @default(now())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+}
