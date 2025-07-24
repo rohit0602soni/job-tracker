@@ -1,33 +1,31 @@
 'use client';
 
+import { signIn } from 'next-auth/react';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-export default function Signup() {
+export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [name, setName] = useState('');
   const router = useRouter();
 
-  const handleSubmit = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    const res = await fetch('/api/register', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password, name }),
+    const res = await signIn('credentials', {
+      redirect: false,
+      email,
+      password,
     });
 
-    if (res.ok) router.push('/login');
-    else alert('Registration failed');
+    if (res?.ok) {
+      router.push('/dashboard');
+    } else {
+      alert('Login failed');
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        placeholder='Name'
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-      />
+    <form onSubmit={handleLogin}>
       <input
         type='email'
         placeholder='Email'
@@ -40,7 +38,7 @@ export default function Signup() {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
-      <button type='submit'>Register</button>
+      <button type='submit'>Login</button>
     </form>
   );
 }
