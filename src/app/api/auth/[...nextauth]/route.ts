@@ -1,4 +1,5 @@
 import NextAuth from 'next-auth';
+
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcrypt';
@@ -50,6 +51,6 @@ export const authOptions = {
   secret: process.env.NEXTAUTH_SECRET,
 };
 
-const handler = NextAuth(authOptions);
+const handler = NextAuth(authOptions); //TODO: fix this to use the correct authOptions
 
 export { handler as GET, handler as POST };

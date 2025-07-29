@@ -16,9 +16,13 @@ export default function Signup() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password, name }),
     });
+    console.log('res', res);
 
-    if (res.ok) router.push('/login');
-    else alert('Registration failed');
+    if (res.ok) {
+      router.push('/login');
+    } else {
+      alert('Registration failed');
+    }
   };
 
   return (
