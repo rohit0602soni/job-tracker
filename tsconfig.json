@@ -1,16 +1,18 @@
 {
   "compilerOptions": {
-    "target": "ES2017",
+    "target": "ESNext",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
-    "strict": true,
+    "strict": false,
     "noEmit": true,
     "esModuleInterop": true,
-    "module": "esnext",
-    "moduleResolution": "bundler",
+    "module": "CommonJS",
+    "moduleResolution": "node",
     "resolveJsonModule": true,
+    "typeRoots": ["./types", "./node_modules/@types"],
     "isolatedModules": true,
+     "noImplicitAny": false,
     "jsx": "preserve",
     "incremental": true,
     "plugins": [

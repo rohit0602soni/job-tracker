@@ -1,11 +1,11 @@
 "use client";
 import { useState } from "react";
+import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
-export default function SignupPage() {
+export default function LoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
-  const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
@@ -13,26 +13,26 @@ export default function SignupPage() {
     e.preventDefault();
     setError("");
 
-    const res = await fetch("/api/signup", {
-      method: "POST",
-      body: JSON.stringify({ email, name, password }),
+    const res = await signIn("credentials", {
+      email,
+      password,
+      redirect: false,
     });
 
-    if (res.ok) {
-      router.push("/login");
+    if (res?.ok) {
+      router.push("/dashboard");
     } else {
-      setError("Signup failed");
+      setError("Invalid email or password");
     }
   };
 
   return (
     <main>
-      <h1>Signup</h1>
+      <h1>Login</h1>
       <form onSubmit={handleSubmit}>
-        <input placeholder="Name" value={name} onChange={e => setName(e.target.value)} />
         <input placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} />
         <input type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} />
-        <button type="submit">Sign Up</button>
+        <button type="submit">Login</button>
       </form>
       {error && <p style={{ color: "red" }}>{error}</p>}
     </main>
