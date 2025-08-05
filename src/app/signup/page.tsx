@@ -1,50 +1,40 @@
-'use client';
+"use client";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-
-export default function Signup() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [name, setName] = useState('');
+export default function SignupPage() {
   const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const res = await fetch('/api/register', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password, name }),
+    setError("");
+
+    const res = await fetch("/api/signup", {
+      method: "POST",
+      body: JSON.stringify({ email, name, password }),
     });
-    console.log('res', res);
 
     if (res.ok) {
-      router.push('/login');
+      router.push("/login");
     } else {
-      alert('Registration failed');
+      setError("Signup failed");
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        placeholder='Name'
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-      />
-      <input
-        type='email'
-        placeholder='Email'
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <input
-        type='password'
-        placeholder='Password'
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <button type='submit'>Register</button>
-    </form>
+    <main>
+      <h1>Signup</h1>
+      <form onSubmit={handleSubmit}>
+        <input placeholder="Name" value={name} onChange={e => setName(e.target.value)} />
+        <input placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} />
+        <input type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} />
+        <button type="submit">Sign Up</button>
+      </form>
+      {error && <p style={{ color: "red" }}>{error}</p>}
+    </main>
   );
 }
